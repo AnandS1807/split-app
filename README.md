@@ -2,7 +2,7 @@ A robust backend system for splitting expenses among groups of people, built wit
 
 ## Features
 
-### ✅ Core Features (MUST HAVE)
+### Core Features (MUST HAVE)
 - **Expense Tracking**: Add, edit, delete, and view expenses
 - **Auto Person Management**: People are automatically added when mentioned in expenses
 - **Settlement Calculations**: Smart algorithm to minimize transactions
@@ -10,7 +10,7 @@ A robust backend system for splitting expenses among groups of people, built wit
 - **Input Validation**: Comprehensive validation and error handling
 - **RESTful API**: Clean, consistent API design
 
-### 🚀 API Endpoints
+### API Endpoints
 
 #### Expense Management
 - `GET /api/expenses` - List all expenses

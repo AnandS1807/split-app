@@ -1,15 +1,18 @@
 # app/main.py
-from flask import Flask
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from app.config import Config
 
+
 db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, 
+                static_folder='static',
+                template_folder='templates')
     app.config.from_object(Config)
     
     # Initialize extensions
@@ -30,5 +33,17 @@ def create_app():
     @app.route('/health')
     def health_check():
         return {'status': 'healthy', 'message': 'Split App API is running'}
+    @app.route('/')
+    def index():
+        return render_template('index.html')
+    
+    @app.route('/expenses')
+    def expenses_page():
+        return render_template('expenses.html')
+    
+    @app.route('/settlements')
+    def settlements_page():
+        return render_template('settlements.html')
+
     
     return app
