@@ -1,6 +1,8 @@
 # app/routes/settlements.py
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from app.services.settlement_service import SettlementService
+from app.main import db
+
 
 bp = Blueprint('settlements', __name__)
 
@@ -51,3 +53,52 @@ def get_summary():
             'success': False,
             'message': f'Error getting summary: {str(e)}'
         }), 500
+    
+@bp.route('/settlements', methods=['POST'])
+def add_settlement():
+    try:
+        data = request.get_json()
+        settlement = Settlement(
+            from_person=data['from_person'],
+            to_person=data['to_person'],
+            amount=data['amount'],
+            notes=data.get('notes'),
+            status=data.get('status', 'pending')
+        )
+        db.session.add(settlement)
+        db.session.commit()
+        
+        return jsonify({
+            'message': 'Settlement recorded successfully',
+            'settlement': {
+                'id': settlement.id,
+                'from_person': settlement.from_person,
+                'to_person': settlement.to_person,
+                'amount': float(settlement.amount),
+                'status': settlement.status
+            }
+        }), 201
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+
+@bp.route('/settlements/<int:settlement_id>', methods=['PUT'])
+def update_settlement(settlement_id):
+    try:
+        settlement = Settlement.query.get_or_404(settlement_id)
+        data = request.get_json()
+        
+        if 'status' in data:
+            settlement.status = data['status']
+        if 'notes' in data:
+            settlement.notes = data['notes']
+            
+        db.session.commit()
+        
+        return jsonify({'message': 'Settlement updated successfully'}), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500

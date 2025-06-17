@@ -112,4 +112,3 @@ class SettlementService:
             'settlements': settlements,
             'settlement_count': len(settlements)
         }
-
