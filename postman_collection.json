@@ -7,7 +7,7 @@
   "variable": [
     {
       "key": "base_url",
-      "value": "https://split-app-production-1059.up.railway.app",
+      "value": "https://split-app-production-1059.up.railway.app/",
       "type": "string"
     }
   ],
